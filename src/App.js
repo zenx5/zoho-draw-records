@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect} from 'react'
+import {  BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
+import DrawingView from './views/Drawing/Index';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default function App(){
+    const navigate = useNavigate();
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    })
+    useEffect(() => {
+      console.log(params)
+        const path = params.path
+        switch (path) {
+          case 'drawing':
+            navigate('/drawing')
+            break
+          default:
+            navigate('/app')
+            break
+        }
+    }, [])
+
+    return(
+        <Routes>
+            <Route path='/app' element='creado con React'/>
+            <Route path='/drawing' element={<DrawingView />}/>
+
+        </Routes>
+    )
 }
-
-export default App;
