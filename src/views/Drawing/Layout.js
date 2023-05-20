@@ -6,10 +6,10 @@ export default function LayoutDrawing() {
 
 
     return <Grid container>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
             <SideBar />
         </Grid>
-        <Grid item xs={10}>
+        <Grid item xs={9}>
             <Drawing />
         </Grid>
     </Grid>

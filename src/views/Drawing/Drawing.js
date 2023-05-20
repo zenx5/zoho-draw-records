@@ -2,10 +2,15 @@ import { Box, Typography } from "@mui/material";
 import { useDrawing } from "./Context";
 
 export default function Drawing() {
-    const {current, modules} = useDrawing()
+    const {drawings, modules} = useDrawing()
 
     return <Box>
         <Typography>Drawing Component</Typography>
-        { current && <Typography>Ha seleccionado el modulo: {modules.find( module => module.id == current)?.module_name }</Typography>}
+        { drawings.map( drawing => <Box key={drawing.title}>
+            <Typography>{drawing.title}</Typography>
+            <Box sx={{ ml:3 }}>
+                { drawing?.indicators?.map( indicator => <Typography key={indicator.id} sx={{ fontWeight:'bold', color: indicator.color }}>{indicator.module}</Typography>) }
+            </Box>
+        </Box> )}
     </Box>
 }

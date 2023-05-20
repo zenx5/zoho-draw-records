@@ -8,7 +8,7 @@ function useDrawing() {
 }
 
 function ProviderDrawing({ children }) {
-    const [current, selectIt] = useState('')
+    const [drawings, setDrawing] = useState([])
     const [modules, setModules] = useState([])
 
     useEffect(()=>{
@@ -22,8 +22,13 @@ function ProviderDrawing({ children }) {
         return await ModulesService.getAll()
     }
 
+    const addDrawing = (item) => {
+        setDrawing( prev => ([...prev, item]) )
+        // create record
+    }
 
-    return <ContextStorage.Provider value={{modules, current, selectIt}}>{children}</ContextStorage.Provider>
+
+    return <ContextStorage.Provider value={{modules, drawings, addDrawing}}>{children}</ContextStorage.Provider>
 }
 
 export { useDrawing, ProviderDrawing }
