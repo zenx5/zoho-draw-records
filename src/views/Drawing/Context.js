@@ -1,33 +1,29 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { ZOHO } from "../../tools/ZohoEmbededAppSDK"
+import ModulesService from "../../services/ModulesService";
 
 const ContextStorage = createContext();
 
-function useStorage() {
+function useDrawing() {
     return useContext(ContextStorage)
 }
 
 function ProviderDrawing({ children }) {
+    const [current, selectIt] = useState('')
+    const [modules, setModules] = useState([])
 
     useEffect(()=>{
-        console.log('use effect for init SDK')
-        ZOHO.embeddedApp.on('PageLoad', async (response) => {
-            console.log('PageLoad')
-            await getModules()
-        })
-        console.log( ZOHO )
-        console.log( ZOHO.embeddedApp )
-        console.log( ZOHO.embeddedApp.init )
-        ZOHO.embeddedApp.init()
+        (async ()=>{
+            const modulesResponse = await getModules()
+            setModules( prev => modulesResponse )
+        })()
     },[])
 
     const getModules = async () => {
-        const response = await ZOHO.CRM.META.getModules()
-        console.log( 'modules', response )
+        return await ModulesService.getAll()
     }
 
 
-    return <ContextStorage.Provider value={{}}>{children}</ContextStorage.Provider>
+    return <ContextStorage.Provider value={{modules, current, selectIt}}>{children}</ContextStorage.Provider>
 }
 
-export { ProviderDrawing }
+export { useDrawing, ProviderDrawing }
