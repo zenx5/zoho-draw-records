@@ -1,16 +1,21 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, Typography } from "@mui/material";
+import BarComponent from "./charts/Bar";
 import { useDrawing } from "./Context";
+
+
 
 export default function Drawing() {
     const {drawings, modules} = useDrawing()
 
+
     return <Box>
-        <Typography>Drawing Component</Typography>
-        { drawings.map( drawing => <Box key={drawing.title}>
-            <Typography>{drawing.title}</Typography>
-            <Box sx={{ ml:3 }}>
-                { drawing?.indicators?.map( indicator => <Typography key={indicator.id} sx={{ fontWeight:'bold', color: indicator.color }}>{indicator.module}</Typography>) }
-            </Box>
-        </Box> )}
+        { drawings.map( drawing => <Card key={drawing.title}>
+            <CardContent>
+                <Typography>{drawing.title}</Typography>
+                <Box>
+                    <BarComponent title={drawing.title} indicators={drawing.indicators}/>
+                </Box>
+            </CardContent>
+        </Card> )}
     </Box>
 }

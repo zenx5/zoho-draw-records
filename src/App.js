@@ -3,11 +3,11 @@ import {  BrowserRouter as Router, Route, Routes, useNavigate } from 'react-rout
 import DrawingView from './views/Drawing/Index';
 
 export default function App(){
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const params = new Proxy(new URLSearchParams(window.location.search), {
     //     get: (searchParams, prop) => searchParams.get(prop),
     // })
-    // useEffect(() => {
+    useEffect(() => {
     //   console.log(params)
     //     const path = params.path
     //     switch (path) {
@@ -18,7 +18,8 @@ export default function App(){
     //         navigate('/app')
     //         break
     //     }
-    // }, [])
+        navigate('/app')
+    }, [navigate])
 
     return(
         <Routes>

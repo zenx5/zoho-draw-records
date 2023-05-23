@@ -8,9 +8,10 @@ export default function SideBar() {
     const [title, setTitle] = useState('')
     const [fields, setFields] = useState({})
     const [selected, setSelected] = useState([])
-    const { modules, addDrawing} = useDrawing()
+    const { modules, addDrawing, loadFields } = useDrawing()
 
-    const handlerSelected = (id) => {
+    const handlerSelected = async (id) => {
+        await loadFields(id)
         setSelected( prev => {
             if( prev.includes(id) ) {
                 return prev.filter( item => item!==id )
@@ -42,6 +43,7 @@ export default function SideBar() {
                     id:id,
                     module: modules?.find( module => module.id === id )?.module_name,
                     field: fields[id]?.field,
+                    vsField: fields[id]?.vsField,
                     color: fields[id]?.color ? fields[id]?.color : '#000',
                 })
             }
@@ -68,9 +70,11 @@ export default function SideBar() {
                     name={module.module_name}
                     checked={selected.includes(module.id)}
                     color={fields[module?.id]?.color}
+                    fields={module.fields}
                     field={fields[module?.id]?.field}
                     onSelected={handlerSelected}
                     onChangeField={handlerSelectField(module.id, 'field')}
+                    onChangeVsField={handlerSelectField(module.id, 'vsField')}
                     onChangeColor={handlerSelectField(module.id, 'color')}
                 />)}
             </List>
