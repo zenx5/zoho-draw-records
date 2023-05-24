@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { CheckBox, CheckBoxOutlineBlank, CheckBoxOutlined } from "@mui/icons-material";
-import { Input, Box, Button, IconButton, List, ListItem, ListItemText, MenuItem, Select, Stack, TextField, Typography, Divider } from "@mui/material";
+import { Box, Button, List, Stack, TextField, Typography } from "@mui/material";
 import { useDrawing } from "./Context";
 import ItemModule from "./ItemModule";
 
@@ -78,9 +77,7 @@ export default function SideBar() {
                     onChangeColor={handlerSelectField(module.id, 'color')}
                 />)}
             </List>
-            {/* <Input type='date' variant='outlined' sx={{ m:1 }}/>
-            <Input type='date' variant='outlined' sx={{ m:1 }}/> */}
         </Stack>
-        <Button variant='outlined' onClick={handlerAdd}>Agregar</Button>
+        <Button variant='outlined' onClick={handlerAdd} disabled={title===''}>Agregar</Button>
     </Box>
 }

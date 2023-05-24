@@ -26,9 +26,10 @@ export default function BarComponent({ title, indicators }){
           for(const indicator of indicators ) {
             dataRecords.push( await getDataByRecord(indicator) )
           }
-          console.log( 'dataRecords', dataRecords )
-          setLabels( Object.keys( dataRecords[0] ) )
-          setValues( dataRecords.map( record => Object.values(record) ) )
+          if( dataRecords.length > 0 ) {
+            setLabels( Object.keys( dataRecords[0] ) )
+            setValues( dataRecords.map( record => Object.values(record) ) )
+          }
       })()
     }, [indicators]);
 
