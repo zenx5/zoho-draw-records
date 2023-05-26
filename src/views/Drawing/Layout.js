@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import SideBar from "./SideBar";
-import Drawing from "./Drawing";
+import Draw from "./Draw";
 
 export default function LayoutDrawing() {
 
@@ -10,7 +10,7 @@ export default function LayoutDrawing() {
             <SideBar />
         </Grid>
         <Grid item xs={9}>
-            <Drawing />
+            <Draw />
         </Grid>
     </Grid>
 }

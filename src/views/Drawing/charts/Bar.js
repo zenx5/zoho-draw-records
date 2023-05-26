@@ -17,6 +17,7 @@ ChartJS.register(
 
 export default function BarComponent({ title, indicators, entity, vsField}){
     const { range, getDataByRecord } = useDrawing()
+    const [showTotal, setShowTotal] = useState(false)
     const [labels, setLabels] = useState([])
     const [values, setValues] = useState([])
 
@@ -27,13 +28,15 @@ export default function BarComponent({ title, indicators, entity, vsField}){
             dataRecords.push( await getDataByRecord(entity.name, vsField.api_name, indicator.name) )
           }
           if( dataRecords.length > 0 ) {
-            setLabels( Object.keys( dataRecords[0] ) )
-            setValues( dataRecords.map( record => Object.values(record) ) )
+            setLabels( Object.keys( dataRecords[0] ).filter( label => showTotal ? label==='[count]' : label!=='[count]' ) )
+            setValues( dataRecords.map( record => {
+              if( showTotal ) return {'[count]': record['[count]']}
+              delete record['[count]']
+              return record
+            }).map( record => Object.values(record) ) )
           }
       })()
-    }, [indicators]);
-
-    
+    }, [indicators, entity.name, getDataByRecord, vsField.api_name, showTotal]);
 
 
     const options = {
@@ -48,7 +51,6 @@ export default function BarComponent({ title, indicators, entity, vsField}){
           },
         },
     };
-
 
     const data = {
         labels,
