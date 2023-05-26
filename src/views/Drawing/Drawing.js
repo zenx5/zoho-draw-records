@@ -24,12 +24,12 @@ export default function Drawing() {
         return !!visibility[hash]
     }
 
-    return <Box sx={{ display:'flex', flexDirection:'column', height:'100%', backgroundColor:'#EDF0F4', p:5, gap:2 }}>
+    return <Box sx={{ display:'flex', flexDirection:'column', height:'100%', p:5, gap:2 }}>
         { drawings.map( drawing => <Card key={drawing.title} sx={{ height:500, p:2 }}>
             <CardContent>
                 <Typography variant='h3' sx={{ fontSize:'1.2rem', fontWeight:'bold', mb:2}}>{drawing.title || drawing.indicators.map( ({module, field, vsField}) => `${module}(${field}-${vsField})` ).join(' | ') }</Typography>
                 <Box sx={{ display:'flex', height:400 }}>
-                    <BarComponent title={drawing.title} indicators={drawing.indicators.filter(filterByVisibility(drawing.title))}/>
+                    <BarComponent title={drawing.title} indicators={drawing.indicators} entity={drawing.entity} vsField={drawing.vsField} />
                     <Stack spacing={2} p={2} sx={{ width:'100%'}}>
                         <List>
                             <ListSubheader>Indicators</ListSubheader>
@@ -37,8 +37,8 @@ export default function Drawing() {
                                 .map( indicator => <ListItem
                                     secondaryAction={<ToggleVisibility onToggle={controlVisibility(`${drawing.title}-${indicator.field}-${indicator.vsField}`)} />}>
                                 <ListItemText
-                                    primary={`${indicator.field} vs ${indicator.vsField}`}
-                                    secondary={ visibility[`${drawing.title}-${indicator.field}-${indicator.vsField}`] ? 'active' : 'inactive' }
+                                    primary={`${indicator.name} vs ${drawing.vsField.name}`}
+                                    secondary={ visibility[`${drawing.title}-${indicator.name}-${drawing.vsField.name}`] ? 'active' : 'inactive' }
                                 />
                             </ListItem>) }
                             <ListSubheader>Actions</ListSubheader>

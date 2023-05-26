@@ -15,7 +15,7 @@ ChartJS.register(
 
 
 
-export default function BarComponent({ title, indicators }){
+export default function BarComponent({ title, indicators, entity, vsField}){
     const { range, getDataByRecord } = useDrawing()
     const [labels, setLabels] = useState([])
     const [values, setValues] = useState([])
@@ -24,7 +24,7 @@ export default function BarComponent({ title, indicators }){
       (async ()=>{
           const dataRecords = []
           for(const indicator of indicators ) {
-            dataRecords.push( await getDataByRecord(indicator) )
+            dataRecords.push( await getDataByRecord(entity.name, vsField.api_name, indicator.name) )
           }
           if( dataRecords.length > 0 ) {
             setLabels( Object.keys( dataRecords[0] ) )
