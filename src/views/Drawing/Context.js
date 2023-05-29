@@ -25,12 +25,27 @@ function ProviderDrawing({ children }) {
         // create record
     }
 
+    const colorDrawing = (indexDrawing, indexIndicator, color = '') => {
+        if ( color === ''){
+            return drawings[indexDrawing].indicators[indexIndicator].color
+        } else {
+            setDrawing( prev => prev.toSpliced(indexDrawing, 1, {
+                ...drawings[indexDrawing],
+                indicators: drawings[indexDrawing].indicators.toSpliced(indexIndicator, 1, {
+                    ...drawings[indexDrawing].indicators[indexIndicator],
+                    color
+                })
+            }) )
+            return true;
+        }
+    }
+
     const loadFields = async (entityId) => {
         const newModules = modules;
         for( const module of newModules ) {
             if( module.id===entityId ) {
                 if( module.fields.length===0 ) module.fields = await SettingsService.getFields( module.module_name )
-                setFields( prev => module.fields )
+                setFields( prev => module.fields.filter( field => field.api_name!=='Owner' ) )
             }
         }
         setModules( prev => newModules )
@@ -68,6 +83,7 @@ function ProviderDrawing({ children }) {
         loadFields,
         drawings,
         addDrawing,
+        colorDrawing,
         range,
         getDataByRecord
     }}>{children}</ContextStorage.Provider>
