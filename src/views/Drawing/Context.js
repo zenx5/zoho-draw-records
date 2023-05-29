@@ -11,6 +11,7 @@ function useDrawing() {
 function ProviderDrawing({ children }) {
     const [drawings, setDrawing] = useState([])
     const [modules, setModules] = useState([])
+    const [fields, setFields] = useState([])
 
     useEffect(()=>{
         (async ()=>{
@@ -27,19 +28,16 @@ function ProviderDrawing({ children }) {
     const loadFields = async (entityId) => {
         const newModules = modules;
         for( const module of newModules ) {
-            module.fields = (module.id===entityId && module.fields.length===0) ? await SettingsService.getFields( module.module_name ) : module.fields
+            if( module.id===entityId ) {
+                if( module.fields.length===0 ) module.fields = await SettingsService.getFields( module.module_name )
+                setFields( prev => module.fields )
+            }
         }
         setModules( prev => newModules )
     }
 
-    const getDataByRecord = async ( indicator, range ) => {
-        const {
-            module : entity,
-            field,
-            vsField
-        } = indicator
-
-        return await SearchService.getTotal(entity, field, vsField)
+    const getDataByRecord = async ( entityName, vsField, nameIndicator, range ) => {
+        return await SearchService.getTotal(entityName, nameIndicator, vsField)
     }
 
     const range = [
@@ -65,6 +63,7 @@ function ProviderDrawing({ children }) {
 
 
     return <ContextStorage.Provider value={{
+        fields,
         modules,
         loadFields,
         drawings,
